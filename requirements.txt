@@ -1,0 +1,10 @@
+numpy
+pandas
+swifter
+pandas-datareader
+pandas>=0.19.2
+lxml
+requests>=2.3.0
+requests-file
+requests-ftp
+wrapt
