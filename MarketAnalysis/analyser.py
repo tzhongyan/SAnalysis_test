@@ -64,26 +64,27 @@ class StockAnalyser:
 
   def get_closing(self):
     """
-    Returns a DataFrame containing the closing price for each day.
+    Returns a pandas.DataFrame containing the closing price for each day.
     """
     return self.__df[['Date','Close']]
 
   def get_volume(self):
     """
-    Returns a Series containing the exchange volume for each day.
+    Returns a pandas.DataFrame containing the exchange volume for each day.
     """
     return self.__df[['Date','Volume']]
   
   def get_daily_return(self):
     """
-    Returns a DataFrame that contains daily return. It is the percentage change of
-    today's closing price against last closing price
+    Returns a panda.DataFrame that contains daily return. It is the 
+    percentage change of today's closing price against last closing price
     """
     # copy close column from df
     df = self.__df[['Date','Close']].copy()
     # shift 1 row down, and store the series as yesterday
     df['last_closing']= df['Close'].shift(1)
     # calculate the percentage change
+    # df['ret'] = np.vectorize(self.__per_calc)(df['Close'], df['last_closing'])
     df['Daily Return'] = (df['Close'] - df['last_closing']) / df['last_closing']
     # Drops the last_closing and Close columns as they are irrelevant
     df = df.drop(columns=['last_closing', 'Close'])
@@ -94,9 +95,10 @@ class StockAnalyser:
 
   def __calc_moving_average(self, days=10, base='Close'):
     """
-    Calculates the moving average for base, and return a Series.
+    Calculates the moving average for base,
+    returns a panda.DataFrame
     """
-    # Copy the important part from dataframe
+    # Copy the data from self.__df
     # Note: [[_]] makes it a dataframe copy instead of a series
     df = self.__df[[base]].copy()
     # Shift down the values of base, based on the days defined
@@ -112,6 +114,10 @@ class StockAnalyser:
     
   
   def get_rolling_mean(self, day_list=[5, 10, 15, 20], base='Close'):
+    """
+    Calculates rolling mean for multiple days as defined in a list, 
+    returns a panda.DataFrame
+    """
     cols = []
     cols.append('Date')
     cols.append(base)
