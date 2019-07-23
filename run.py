@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from MarketAnalysis.analyser import StockAnalyser
 from MarketAnalysis.plot import plot, fancy_plot, plot_histogram
 

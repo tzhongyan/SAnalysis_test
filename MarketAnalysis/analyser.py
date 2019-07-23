@@ -19,14 +19,22 @@ class StockAnalyser:
     return self.__df.head()
 
   def load_csv(self, csv_path):
-    if self.__df.empty:
-      self.__df = pd.read_csv(csv_path)
-    else:
+    if not self.__df.empty:
       s = input('There is data in this analyser. Do you still want to continue? [Y/n]')
-      if s[0]=='Y' or s[0]=='y':
-        self.__df = pd.read_csv(csv_path)
-      else:
-        pass
+      if s[0]!='Y' and s[0]!='y':
+        # end method if y is not received as input
+        return
+
+    # read csv
+    try:
+      self.__df = pd.read_csv(csv_path)
+      # set Date as datetime format
+      self.__df['Date'] = self.__df['Date'].apply(pd.to_datetime)
+    except FileNotFoundError:
+      print('File not found, please try to input full path to the file and try again.')
+    except Exception:
+      print('Unknown error while reading csv.')
+
 
   def save_to_csv(self, csv_path):
     if self.__df.empty:
